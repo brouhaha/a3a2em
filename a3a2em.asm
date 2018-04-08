@@ -1,3 +1,29 @@
+; Partially reverse-engineered code from the Apple II emulation disk for
+; the Apple ///
+; Code copyright Apple Computer
+; Reverse-engineering (macros, functions, labels, comments) copyright 2018
+; Eric Smith <spacewar@gmail.com>
+
+; Cross-assemble with Macro Assembler AS:
+;   http://john.ccac.rwth-aachen.de:8000/as/
+
+; Apple II emulation disk organization:
+
+; disk scectors  memory
+; T00S0..T01S7	 a000..b7ff  boot, configuration, charset, emulation setup code 
+; T02S0..T09S5   2000..95ff  ROM images
+
+; T02S0..T02S2   2000..22ff  peripheral card ROMs for slots 5-7
+; T02Sb..T05Sa   2b00..5aff  Programmer's Aid #1, Integer BASIC, monitor
+; T05Sb..T05Sd   5b00..5dff  peripheral card ROMs for slots 5-7
+; T06S6..T09S5   6600..95ff  Applesoft BASIC, monitor
+
+; Apple /// boot ROM loads block zero (T00S0 and T00S1) to a000..a1ff
+; that code loads T00S2..T01S7 to a200..b7ff
+; loads ROM images from T02S0..T09S5 to 2000..95ff
+; based on user configuration choices, copies selected ROM images to
+; final locations
+
 	cpu	6502
 
 fillto	macro	addr, val
